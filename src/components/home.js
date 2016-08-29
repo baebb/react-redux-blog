@@ -1,17 +1,27 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import { Link } from 'react-router';
+
+import {fetchPosts} from '../actions/index';
+
 
 class PostsIndex extends React.Component {
     componentWillMount() {
-        console.log('WHAT UP CRIP!');
+        this.props.fetchPosts();
     }
 
     render() {
         return (
             <div>
-                WHAT UP BLOOD
+                <div className="text-xs-right">
+                    <Link to="/posts/new" className="btn btn-primary">
+                        New Post
+                    </Link>
+                </div>
+                List of postsasdf
             </div>
         )
     }
 }
 
-export default PostsIndex;
+export default connect(null, {fetchPosts: fetchPosts})(PostsIndex);
