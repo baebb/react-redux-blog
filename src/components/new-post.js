@@ -1,5 +1,6 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
+import { Link } from 'react-router';
 
 import { createPost } from '../actions/index';
 
@@ -14,22 +15,50 @@ class NewPost extends React.Component {
         return (
            <form onSubmit={ handleSubmit(this.props.createPost) }>
                <h3>Create New Post</h3>
-               <div className="form-group">
+               <div className={`form-group ${title.touched && title.invalid ? 'has-danger' : ''}`}>
                    <label htmlFor="title">Title</label>
                    <input type="text" id="title" className="form-control" {...title} />
+                   <p className="text-muted">
+                       {title.touched ? title.error : ''}
+                   </p>
                </div>
-               <div className="form-group">
+               <div className={`form-group ${categories.touched && categories.invalid ? 'has-danger' : ''}`}>
                    <label htmlFor="categories">Categories</label>
                    <input type="text" id="categories" className="form-control" {...categories} />
+                   <p className="text-muted">
+                       {categories.touched ? categories.error : ''}
+                   </p>
                </div>
-               <div className="form-group">
+               <div className={`form-group ${content.touched && content.invalid ? 'has-danger' : ''}`}>
                    <label htmlFor="content">Content</label>
                    <textarea rows="3" id="content" className="form-control" {...content} ></textarea>
+                   <p className="text-muted">
+                       {content.touched ? content.error : ''}
+                   </p>
                </div>
                <button type="submit" className="btn btn-primary">Submit</button>
+               <Link to="/" className="btn btn-danger">Cancel</Link>
            </form>
         )
     }
+}
+
+function validate(values) {
+    const errors = {};
+
+    if (!values.title) {
+        errors.title = 'Please enter a title';
+    }
+
+    if (!values.categories) {
+        errors.categories = 'Please enter a category';
+    }
+
+    if (!values.content) {
+        errors.content = 'Please enter some content';
+    }
+
+    return errors;
 }
 
 //redux-forms migration bullshit
@@ -51,5 +80,6 @@ class NewPost extends React.Component {
 
 export default reduxForm({
     form: 'CreatePost',
-    fields: ['title', 'categories','content']
+    fields: ['title', 'categories','content'],
+    validate
 }, null, { createPost })(NewPost);
