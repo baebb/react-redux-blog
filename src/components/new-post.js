@@ -5,6 +5,17 @@ import { Link } from 'react-router';
 import { createPost } from '../actions/index';
 
 class NewPost extends React.Component {
+    static contextTypes = {
+        router: React.PropTypes.object
+    }
+
+    onSubmit(form) {
+        this.props.createPost(form)
+            .then(() => {
+                this.context.router.push('/');
+            });
+    }
+
     render() {
         // ...old way
         // const handleSubmit = this.props.handleSubmit;
@@ -13,7 +24,7 @@ class NewPost extends React.Component {
         const { handleSubmit, fields: { title, categories, content } } = this.props;
 
         return (
-           <form onSubmit={ handleSubmit(this.props.createPost) }>
+           <form onSubmit={ handleSubmit(this.onSubmit.bind(this)) }>
                <h3>Create New Post</h3>
                <div className={`form-group ${title.touched && title.invalid ? 'has-danger' : ''}`}>
                    <label htmlFor="title">Title</label>
