@@ -7,14 +7,14 @@ import { createPost } from '../actions/index';
 class NewPost extends React.Component {
     static contextTypes = {
         router: React.PropTypes.object
-    }
+    };
 
     onSubmit(form) {
         this.props.createPost(form)
             .then(() => {
                 this.context.router.push('/');
             });
-    }
+    };
 
     render() {
         // ...old way
